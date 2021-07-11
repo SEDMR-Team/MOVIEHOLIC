@@ -36,7 +36,17 @@ app.get('/search', (req, res) => {
 
 
 
-
+app.get('/movies/:id', (req, res) => {
+  const id = req.query.id;
+  axios({
+    method: 'get',
+    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&id=${id}`,
+   
+  }).then(response => {
+    res.json(response.data.results)
+  })
+    .catch(error => console.log(error))
+})
 
 
 
