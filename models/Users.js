@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-  id: Number,
+ 
   poster_path:String,
   title: String,
  overview: String,
   status: String,
+ id : String,
+  release_date: String,
   vote_average: Number,
+
 });
 
 const userSchema = new mongoose.Schema({
@@ -14,6 +17,6 @@ const userSchema = new mongoose.Schema({
   movies: [movieSchema]
 });
 
-const Users = mongoose.model('users', userSchema);
+const Users = mongoose.model('user', userSchema);
 
 module.exports = Users;
