@@ -6,7 +6,7 @@ const { default: axios } = require('axios');
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5001;
-mongoose.connect('mongodb://localhost:27017/movie', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cors());
 
 
@@ -52,40 +52,40 @@ app.get('/movie/:id', (req, res) => {
 
 
 
-// // post route to add business to specific user
-// app.post('/movie/save', (req, res) => {
-//   const user = req.body;
-//   Users.find({ email: user.email }, (err, userData) => {
-//     if (err) {
-//       res.send(err);
-//     } else if (userData.length < 1) {
-//       // if the user not found, then save the whole data
-//       console.log(userData)
-//       const newUser = new Users({
-//         email: user.email,
-//        movies: [user.movie]
-//       });
-//       newUser.save()
-//         .then(newUserData => {
-//           res.json(newUserData);
-//         })
-//         .catch(err => {
-//           res.status(500).send(err);
-//         });
-//     } else {
-//       // if the user found, then only push the business in the businesses property
-//       const userInfo = userData[0];
-//       userInfo.movies.push(user.movie);
-//       userInfo.save()
-//         .then(userInfo => {
-//           res.json(userInfo);
-//         })
-//         .catch(err => {
-//           res.status(500).send(err);
-//         });
-//     }
-//   })
-// })
+
+app.post('/movie/save', (req, res) => {
+  const user = req.body;
+  Users.find({ email: user.email }, (err, userData) => {
+    if (err) {
+      res.send(err);
+    } else if (userData.length < 1) {
+      // if the user not found, then save the whole data
+      console.log(userData)
+      const newUser = new Users({
+        email: user.email,
+       movies: [user.movie]
+      });
+      newUser.save()
+        .then(newUserData => {
+          res.json(newUserData);
+        })
+        .catch(err => {
+          res.status(500).send(err);
+        });
+    } else {
+      // if the user found, then only push in the businesses property
+      const userInfo = userData[0];
+      userInfo.movies.push(user.movie);
+      userInfo.save()
+        .then(userInfo => {
+          res.json(userInfo);
+        })
+        .catch(err => {
+          res.status(500).send(err);
+        });
+    }
+  })
+})
 
 
 
