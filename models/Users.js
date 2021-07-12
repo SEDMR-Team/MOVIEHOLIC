@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
   id: Number,
+  poster_path:String,
   title: String,
+ overview: String,
   status: String,
   vote_average: Number,
 });
