@@ -8,6 +8,31 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 mongoose.connect('mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cors());
+const Users = require('./models/Users.js');
+app.use(express.json());
+
+
+
+
+// business profile GET
+app.get('/movie/profile', (req, res) => {
+  Users.find({ email: req.query.email }, (error, data) => {
+    if (error) {
+      res.send(error);
+    } else {
+      if (data.length === 0) {
+        res.send(data);
+      } else {
+        res.send(data[0].movies);
+      }
+    }
+  });
+});
+
+
+
+
+
 
 
     
@@ -52,7 +77,7 @@ app.get('/movie/:id', (req, res) => {
 
 
 
-
+// post route to add movie to specific user
 app.post('/movie/save', (req, res) => {
   const user = req.body;
   Users.find({ email: user.email }, (err, userData) => {
@@ -73,7 +98,7 @@ app.post('/movie/save', (req, res) => {
           res.status(500).send(err);
         });
     } else {
-      // if the user found, then only push in the businesses property
+      // if the user found, then only push the movie in the movies property
       const userInfo = userData[0];
       userInfo.movies.push(user.movie);
       userInfo.save()
@@ -85,9 +110,35 @@ app.post('/movie/save', (req, res) => {
         });
     }
   })
-})
+});
 
-
+// delete the movie from a specific user
+app.delete('/movie/:id', (req, res) => {
+  Users.find({ email: req.query.email }, (err, data) => {
+    console.log(req.params.id);
+    // error handling
+    if (err) {
+      res.send(err);
+    } else {
+      if (data.length === 0) {
+        // user not found
+        res.status(400).send(data)
+      } else {
+        // user found
+        const user = data[0];
+        // delete the requested business with the id
+        user.movies = user.movies.filter(movie => movie.id !== req.params.id);
+        // save the user
+        user.save()
+          .then(data => {
+            // console.log('data after delete', data);
+            res.json(data.movies);
+          })
+          .catch(err => res.status(500).send(err));
+      }
+    }
+  })
+});
 
 
 
