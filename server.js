@@ -3,8 +3,10 @@ const express = require('express')
 const cors = require('cors');
 require('dotenv').config();
 const { default: axios } = require('axios');
+const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5001;
+mongoose.connect('mongodb://localhost:27017/movie', { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cors());
 
 
@@ -36,17 +38,70 @@ app.get('/search', (req, res) => {
 
 
 
-app.get('/movies/:id', (req, res) => {
-  const id = req.query.id;
+app.get('/movie/:id', (req, res) => {
+   const id= req.params.id;
   axios({
     method: 'get',
-    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&id=${id}`,
+    url: `https://api.themoviedb.org/3/movie/${id}?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`,
    
   }).then(response => {
-    res.json(response.data.results)
+    res.json(response.data)
   })
     .catch(error => console.log(error))
-})
+});
+
+
+
+// // post route to add business to specific user
+// app.post('/movie/save', (req, res) => {
+//   const user = req.body;
+//   Users.find({ email: user.email }, (err, userData) => {
+//     if (err) {
+//       res.send(err);
+//     } else if (userData.length < 1) {
+//       // if the user not found, then save the whole data
+//       console.log(userData)
+//       const newUser = new Users({
+//         email: user.email,
+//        movies: [user.movie]
+//       });
+//       newUser.save()
+//         .then(newUserData => {
+//           res.json(newUserData);
+//         })
+//         .catch(err => {
+//           res.status(500).send(err);
+//         });
+//     } else {
+//       // if the user found, then only push the business in the businesses property
+//       const userInfo = userData[0];
+//       userInfo.movies.push(user.movie);
+//       userInfo.save()
+//         .then(userInfo => {
+//           res.json(userInfo);
+//         })
+//         .catch(err => {
+//           res.status(500).send(err);
+//         });
+//     }
+//   })
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
