@@ -1,20 +1,25 @@
-'use strict';
+
 const express = require('express')
 const cors = require('cors');
-require('dotenv').config();
 const { default: axios } = require('axios');
 const mongoose = require('mongoose');
+require('dotenv').config();
+const Users = require('./models/Users.js');
 const app = express();
 const PORT = process.env.PORT || 5001;
-mongoose.connect('mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
-app.use(cors());
-const Users = require('./models/Users.js');
+mongoose.connect('MONGODB_URI=mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
+
 app.use(express.json());
+app.use(cors());
 
 
 
 
-// business profile GET
+
+app.get('/', (req, res) => {
+  res.send('Welcome to MovieHolic back end!');
+});
+//movie profile GET
 app.get('/movie/profile', (req, res) => {
   Users.find({ email: req.query.email }, (error, data) => {
     if (error) {
@@ -29,13 +34,6 @@ app.get('/movie/profile', (req, res) => {
   });
 });
 
-
-
-
-
-
-
-    
     app.get('/movie', (req, res) => {
       // const with_genres = req.query.with_genres;
       // const vote_average= req.query.vote_average.gte
@@ -75,8 +73,6 @@ app.get('/movie/:id', (req, res) => {
     .catch(error => console.log(error))
 });
 
-
-
 // post route to add movie to specific user
 app.post('/movie/save', (req, res) => {
   const user = req.body;
@@ -113,7 +109,9 @@ app.post('/movie/save', (req, res) => {
 });
 
 // delete the movie from a specific user
-app.delete('/movie/:id', (req, res) => {
+app.delete('/movies/:id', (req, res) => {
+  // const id= req.params.id;
+  const id = req.params.index
   Users.find({ email: req.query.email }, (err, data) => {
     console.log(req.params.id);
     // error handling
@@ -131,8 +129,8 @@ app.delete('/movie/:id', (req, res) => {
         // save the user
         user.save()
           .then(data => {
-            // console.log('data after delete', data);
-            res.json(data.movies);
+             console.log('data after delete', data);
+            res.json(user.movies);
           })
           .catch(err => res.status(500).send(err));
       }
@@ -142,8 +140,18 @@ app.delete('/movie/:id', (req, res) => {
 
 
 
-
-
+// app.delete('/movie/:id', (req, res) => {
+//   const id =req.params.id;
+//   const email =req.query.email;
+//   Users.findOne({email:email},(error,user)=>{
+//       if(error){
+//           res.send(error)
+//       }
+//       user.movies.splice(id,1);
+//       user.save();
+//       res.send(user)
+//   })
+// })
 
 
 
