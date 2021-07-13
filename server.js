@@ -15,7 +15,6 @@ app.use(cors());
 
 
 
-
 app.get('/', (req, res) => {
   res.send('Welcome to MovieHolic back end!');
 });
@@ -50,10 +49,11 @@ app.get('/movie/profile', (req, res) => {
 // handle search by genere and year (released-data)
 app.get('/search', (req, res) => {
   const with_genres = req.query.with_genres;
-  const primary_release_year= req.query.primary_release_year;
+  const year= req.query.year;
+  const page= req.query.page;
   axios({
     method: 'get',
-    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&with_genres=${with_genres}&primary_release_year=${primary_release_year}`,
+    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&with_genres=${with_genres}&year=${year}&page=${page}`,
    
   }).then(response => res.json(response.data.results))
     .catch(error => console.log(error))
@@ -137,25 +137,6 @@ app.delete('/movies/:id', (req, res) => {
     }
   })
 });
-
-
-
-// app.delete('/movie/:id', (req, res) => {
-//   const id =req.params.id;
-//   const email =req.query.email;
-//   Users.findOne({email:email},(error,user)=>{
-//       if(error){
-//           res.send(error)
-//       }
-//       user.movies.splice(id,1);
-//       user.save();
-//       res.send(user)
-//   })
-// })
-
-
-
-
 
 
 
