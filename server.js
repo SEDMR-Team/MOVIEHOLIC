@@ -49,11 +49,11 @@ app.get('/movie/profile', (req, res) => {
 // handle search by genere and year (released-data)
 app.get('/search', (req, res) => {
   const with_genres = req.query.with_genres;
-  const release_date= req.query.release_date;
-  const page= req.page;
+  const year= req.query.year;
+  const page= req.query.page;
   axios({
     method: 'get',
-    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&with_genres=${with_genres}&release_date=${release_date}&page=${page}`,
+    url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&with_genres=${with_genres}&year=${year}&page=${page}`,
    
   }).then(response => res.json(response.data.results))
     .catch(error => console.log(error))
