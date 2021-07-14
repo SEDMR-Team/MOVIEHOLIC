@@ -6,8 +6,10 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const Users = require('./models/Users.js');
 const app = express();
+
 const PORT = process.env.PORT || 5001;
-mongoose.connect('mongodb+srv://sultanElayan:_9999ssss@cluster0.cpjle.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(express.json());
 app.use(cors());
