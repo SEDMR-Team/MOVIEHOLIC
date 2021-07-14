@@ -9,7 +9,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 
-mongoose.connect('mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://sultanElayan:_9999ssss@cluster0.cpjle.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true });
 
 
 
