@@ -7,7 +7,7 @@ require('dotenv').config();
 const Users = require('./models/Users.js');
 const app = express();
 const PORT = process.env.PORT || 5001;
-mongoose.connect('MONGODB_URI=mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://sultanElayan:_9999ssss@cluster0.cpjle.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(express.json());
 app.use(cors());
@@ -46,13 +46,42 @@ app.get('/movie/profile', (req, res) => {
     })
 
 
+    app.get('/top_rated', (req, res) => {
+       const page= req.query.page;
+    
+      
+      axios({
+        method: 'get',
+        url:`https://api.themoviedb.org/3/movie/top_rated?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&page=${page}`,
+       
+      }).then(response => res.json(response.data))
+        .catch(error => console.log(error))
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // handle search by genere and year (released-data)
 app.get('/search', (req, res) => {
   const with_genres = req.query.with_genres;
   const year= req.query.year;
   const page= req.query.page;
   axios({
-    method: 'get',
+    method:'get',
     url: `https://api.themoviedb.org/3/discover/movie?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate&with_genres=${with_genres}&year=${year}&page=${page}`,
    
   }).then(response => res.json(response.data.results))
@@ -137,13 +166,6 @@ app.delete('/movies/:id', (req, res) => {
     }
   })
 });
-
-
-
-
-
-
-
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`));
 
