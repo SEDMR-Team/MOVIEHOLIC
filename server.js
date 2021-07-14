@@ -9,7 +9,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 
-mongoose.connect('MONGODB_URI=mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
 
 
 
@@ -57,7 +57,7 @@ app.get('/movie/profile', (req, res) => {
       
       axios({
         method: 'get',
-        url:`https://api.themoviedb.org/3/movie/top_rated?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US&page=${page}`,
+        url:`https://api.themoviedb.org/3/movie/top_rated?api_key=b7e66d37aebc415226444c14cfe515e4&language=en-US`,
        
       }).then(response => res.json(response.data))
         .catch(error => console.log(error))
