@@ -6,8 +6,13 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const Users = require('./models/Users.js');
 const app = express();
+
 const PORT = process.env.PORT || 5001;
+
 mongoose.connect('MONGODB_URI=mongodb://localhost:27017/movie', {useNewUrlParser: true, useUnifiedTopology: true });
+
+
+
 
 app.use(express.json());
 app.use(cors());
